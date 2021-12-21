@@ -18,7 +18,7 @@ function ElevationScroll(props) {
 export default function Header(props) {
     return (
         <ElevationScroll>
-            <AppBar>
+            <AppBar color="primary">
                 <Toolbar>Patty Dev</Toolbar>
             </AppBar>
         </ElevationScroll>
