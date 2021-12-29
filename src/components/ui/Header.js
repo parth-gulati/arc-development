@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import { Tabs, Tab } from '@material-ui/core';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
@@ -28,6 +28,12 @@ const useStyles = makeStyles(theme => ({
         height: '7em',
         fontFamily: 'Roboto'
     },
+    logoContainer: {
+        padding: 0,
+        "&:hover" : {
+            backgroundColor: 'transparent'
+        }
+    },
     tabContainer: {
         marginLeft: 'auto'
     },
@@ -52,12 +58,32 @@ export default function Header(props) {
         setCurrent(value);
     }
 
+    useEffect(()=>{
+        if(window.location.pathname === '/' && current!==0){
+            setCurrent(0)
+        }
+        else if(window.location.pathname === '/services' && current!==1){
+            setCurrent(1)
+        }
+        else if(window.location.pathname === '/about-us' && current!==2){
+            setCurrent(2)
+        }
+        else if(window.location.pathname === '/contact-us' && current!==3){
+            setCurrent(3)
+        }
+        else if(window.location.pathname === '/support' && current!==4){
+            setCurrent(4)
+        }
+    }, [current]);
+
     return (
         <>
             <ElevationScroll>
                 <AppBar position='fixed' color="primary">
                     <Toolbar disableGutters={true}>
+                        <Button component={Link} disableRipple={true} to="/" onClick={()=>setCurrent(0)} className={classes.logoContainer}>
                         <img alt="Company logo" className={classes.logo} src={logo}/>
+                        </Button>
                         <Tabs onChange={handleChange} indicatorColor='primary' value={current} className={classes.tabContainer}>
                             <Tab className={classes.tab} component={Link} to="/" label="Home"/>
                             <Tab className={classes.tab} component={Link} to="/services" label="Services"/>
@@ -65,7 +91,7 @@ export default function Header(props) {
                             <Tab className={classes.tab} component={Link} to="/contact-us" label="Contact Us"/>
                             <Tab className={classes.tab} component={Link} to="/support" label="Support"/>
                         </Tabs>
-                        <Button className={classes.button} variant="contained" color="secondary">Free Estimate</Button>
+                        <Button className={classes.button} component={Link} to="/estimate" variant="contained" color="secondary">Free Estimate</Button>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
