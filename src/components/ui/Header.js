@@ -1,9 +1,13 @@
-import React from 'react'
-import { AppBar, Toolbar } from '@material-ui/core'
+import React, { useState } from 'react'
+import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import { Tabs, Tab } from '@material-ui/core';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import { makeStyles } from '@material-ui/styles';
+import { Button } from '@material-ui/core';
+import logo from '../../assets/logo.svg'
 
 function ElevationScroll(props) {
-    const { children} = props;
+    const { children } = props;
     const trigger = useScrollTrigger({
         disableHysteresis: true,
         threshold: 0,
@@ -14,13 +18,57 @@ function ElevationScroll(props) {
     });
 }
 
+const useStyles = makeStyles(theme => ({
+    toolbarMargin: {
+        ...theme.mixins.toolbar,
+        marginBottom: '3em'
+    },
+    logo: {
+        height: '7em',
+        fontFamily: 'Roboto'
+    },
+    tabContainer: {
+        marginLeft: 'auto'
+    },
+    tab: {
+        ...theme.typography.tab
+    },
+    button: {
+        ...theme.typography.estimate,
+        borderRadius: '50px',
+        marginLeft: "50px",
+        marginRight: '25px',
+        height: '45px',
+    }
+}))
+
 
 export default function Header(props) {
+    const classes = useStyles()
+    const [current, setCurrent] = useState(0)
+
+    const handleChange = (e, value) =>{
+        setCurrent(value);
+    }
+
     return (
-        <ElevationScroll>
-            <AppBar color="primary">
-                <Toolbar>Patty Dev</Toolbar>
-            </AppBar>
-        </ElevationScroll>
+        <>
+            <ElevationScroll>
+                <AppBar position='fixed' color="primary">
+                    <Toolbar disableGutters={true}>
+                        <img alt="Company logo" className={classes.logo} src={logo}/>
+                        <Tabs onChange={handleChange} indicatorColor='primary' value={current} className={classes.tabContainer}>
+                            <Tab className={classes.tab} label="Home"/>
+                            <Tab className={classes.tab} label="Services"/>
+                            <Tab className={classes.tab} label="About Us"/>
+                            <Tab className={classes.tab} label="Contact Us"/>
+                            <Tab className={classes.tab} label="Support"/>
+                        </Tabs>
+                        <Button className={classes.button} variant="contained" color="secondary">Free Estimate</Button>
+                    </Toolbar>
+                </AppBar>
+            </ElevationScroll>
+            <div className={classes.toolbarMargin}/>
+        </>
     )
 }

@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import Header from './ui/Header';
 import theme from './ui/Theme';
@@ -6,16 +6,11 @@ import theme from './ui/Theme';
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <Header />
       <div className="App">
-        <p> {[...new Array(100)]
-          .map(
-            () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-          )
-          .join('\n')}</p>
-        <Header />
+        <Typography variant="body1">
+         HELLO
+        </Typography>
         <Button variant="contained">
           Click me!
         </Button>
