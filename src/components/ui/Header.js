@@ -5,6 +5,7 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import logo from '../../assets/logo.svg'
+import {Link} from 'react-router-dom'
 
 function ElevationScroll(props) {
     const { children } = props;
@@ -58,11 +59,11 @@ export default function Header(props) {
                     <Toolbar disableGutters={true}>
                         <img alt="Company logo" className={classes.logo} src={logo}/>
                         <Tabs onChange={handleChange} indicatorColor='primary' value={current} className={classes.tabContainer}>
-                            <Tab className={classes.tab} label="Home"/>
-                            <Tab className={classes.tab} label="Services"/>
-                            <Tab className={classes.tab} label="About Us"/>
-                            <Tab className={classes.tab} label="Contact Us"/>
-                            <Tab className={classes.tab} label="Support"/>
+                            <Tab className={classes.tab} component={Link} to="/" label="Home"/>
+                            <Tab className={classes.tab} component={Link} to="/services" label="Services"/>
+                            <Tab className={classes.tab} component={Link} to="/about-us" label="About Us"/>
+                            <Tab className={classes.tab} component={Link} to="/contact-us" label="Contact Us"/>
+                            <Tab className={classes.tab} component={Link} to="/support" label="Support"/>
                         </Tabs>
                         <Button className={classes.button} variant="contained" color="secondary">Free Estimate</Button>
                     </Toolbar>
