@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Menu, MenuItem } from '@material-ui/core'
 import { Tabs, Tab } from '@material-ui/core';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { makeStyles } from '@material-ui/styles';
@@ -53,9 +53,21 @@ const useStyles = makeStyles(theme => ({
 export default function Header(props) {
     const classes = useStyles()
     const [current, setCurrent] = useState(0)
+    const [anchorEl, setAnchorEl] = useState(null)
+    const [open, setOpen] = useState(false)
 
     const handleChange = (e, value) =>{
         setCurrent(value);
+    }
+
+    const handleClick = (e) =>{
+        setAnchorEl(e.currentTarget)
+        setOpen(true)
+    }
+
+    const handleClose = (e)=>{
+        setAnchorEl(null)
+        setOpen(false)
     }
 
     useEffect(()=>{
@@ -86,12 +98,18 @@ export default function Header(props) {
                         </Button>
                         <Tabs onChange={handleChange} indicatorColor='primary' value={current} className={classes.tabContainer}>
                             <Tab className={classes.tab} component={Link} to="/" label="Home"/>
-                            <Tab className={classes.tab} component={Link} to="/services" label="Services"/>
+                            <Tab onMouseOver={(e)=>{handleClick(e)}} aria-haspopup={anchorEl? true : undefined} aria-owns={anchorEl? "simple-menu" : undefined} className={classes.tab} component={Link} to="/services" label="Services"/>
                             <Tab className={classes.tab} component={Link} to="/about-us" label="About Us"/>
                             <Tab className={classes.tab} component={Link} to="/contact-us" label="Contact Us"/>
                             <Tab className={classes.tab} component={Link} to="/support" label="Support"/>
                         </Tabs>
-                        <Button className={classes.button} component={Link} to="/estimate" variant="contained" color="secondary">Free Estimate</Button>
+                        <Button className={classes.button} component={Link} onClick={()=>setCurrent(false)} to="/estimate" variant="contained" color="secondary">Free Estimate</Button>
+                        <Menu MenuListProps={{onMouseLeave: handleClose}} id="simple-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
+                            <MenuItem component={Link} to="/services" onClick={()=>{handleClose();setCurrent(1);}}>Services</MenuItem>
+                            <MenuItem component={Link} to="/custom-software" onClick={()=>{handleClose();setCurrent(1);}}>Custom Software Development</MenuItem>
+                            <MenuItem component={Link} to="/mobile-apps" onClick={()=>{handleClose();setCurrent(1);}}>Mobile App Development</MenuItem>
+                            <MenuItem component={Link} to="/websites" onClick={()=>{handleClose();setCurrent(1);}}>Website Development</MenuItem>
+                        </Menu>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
