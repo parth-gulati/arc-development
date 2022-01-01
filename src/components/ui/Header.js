@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.tab,
     opacity: 0.7,
     "&:hover": {
-        opacity: 1
-    }
+      opacity: 1,
+    },
   },
   button: {
     ...theme.typography.estimate,
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     backgroundColor: theme.palette.common.arcBlue,
     color: "white",
-    borderRadius: "0px"
+    borderRadius: "0px",
   },
 }));
 
@@ -66,6 +66,7 @@ export default function Header(props) {
   const [current, setCurrent] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleChange = (e, value) => {
     setCurrent(value);
@@ -80,6 +81,19 @@ export default function Header(props) {
     setAnchorEl(null);
     setOpen(false);
   };
+
+  const handleMenuItemClick = (e, i) => {
+    setAnchorEl(null);
+    setOpen(false);
+    setSelectedIndex(i);
+  };
+
+  const menuOptions = [
+    { name: "Services", link: "/services" },
+    { name: "Custom Software Development", link: "/custom-software" },
+    { name: "Mobile App Development", link: "/mobile-apps" },
+    { name: "Website Development", link: "/websites" },
+  ];
 
   useEffect(() => {
     if (window.location.pathname === "/" && current !== 0) {
@@ -170,50 +184,21 @@ export default function Header(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem
-                component={Link}
-                to="/services"
-                onClick={() => {
-                  handleClose();
-                  setCurrent(1);
-                }}
-                classes={{ root: classes.menuItem }}
-              >
-                Services
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/custom-software"
-                onClick={() => {
-                  handleClose();
-                  setCurrent(1);
-                }}
-                classes={{ root: classes.menuItem }}
-              >
-                Custom Software Development
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/mobile-apps"
-                onClick={() => {
-                  handleClose();
-                  setCurrent(1);
-                }}
-                classes={{ root: classes.menuItem }}
-              >
-                Mobile App Development
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/websites"
-                onClick={() => {
-                  handleClose();
-                  setCurrent(1);
-                }}
-                classes={{ root: classes.menuItem }}
-              >
-                Website Development
-              </MenuItem>
+              {menuOptions.map((option, i) => (
+                <MenuItem
+                  key={option}
+                  component={Link}
+                  to={option.link}
+                  classes={{ root: classes.menuItem }}
+                  onClick={(event)=>{
+                    handleMenuItemClick(event,i);
+                    setCurrent(1);
+                  }}
+                  selected={i===selectedIndex && current===1}
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
             </Menu>
           </Toolbar>
         </AppBar>
